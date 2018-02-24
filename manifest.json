@@ -1,0 +1,27 @@
+{
+  "manifest_version": 2,
+
+  "name": "moodle course filter",
+  "description": "filtering the courses shown on the main page by semester",
+  "version": "1.0",
+
+  "page_action":{
+    "default_popup": "popup.html", 
+    "default_title": "course filter"
+  },
+
+  "content_scripts": [
+    {
+      "all_frames": true,
+      "js": [ "filter.js" ],
+      "matches": [ "https://mw5.haifa.ac.il/" ],
+      "run_at": "document_end"
+    }
+  ],
+
+    "permissions" :
+    [
+      "activeTab",
+      "tabs"
+    ]
+}
