@@ -1,12 +1,63 @@
-//ykaner 
+//ykaner ©
+
+function htmlToElement(html) {
+    var template = document.createElement('template');
+    html = html.trim();
+    template.innerHTML = html;
+    return template.content.firstChild;
+}
+
+function add_controls(){
+	var control_element = htmlToElement('<fieldset> <legend>בחר איזה קורסים להציג</legend> <div> <input type="checkbox" id="in-a" name="a" value="סמסטר א"> <label for="a">סמסטר א</label> </div> <div> <input type="checkbox" id="in-b" name="b" value="סמסטר ב" checked> <label for="b">סמסטר ב</label> </div> <div> <input type="checkbox" id="in-c" name="c" value="סמסטר קיץ"> <label for="c">סמסטר קיץ</label> </div> <div> <input type="checkbox" id="in-x" name="x" value="אחר"> <label for="x">כל דבר שהוא לא קורס - ספריה וכו</label> </div> </fieldset>');
+
+	var course_box = document.getElementsByClassName('courses frontpage-course-list-enrolled')[0];
+	var frontpage = document.getElementById('frontpage-course-list');
+	frontpage.insertBefore(control_element, course_box);
+
+	var default_show = {
+		a: false,
+		b: true,
+		c: false,
+		x: false
+	};
+
+	var show = default_show;
+
+	var in_a = frontpage.querySelector('#in-a');
+	var in_b = frontpage.querySelector('#in-b');
+	var in_c = frontpage.querySelector('#in-c');
+	var in_x = frontpage.querySelector('#in-x');
+
+	chck_boxes = [in_a, in_b, in_c, in_x];
+
+	for(var cb of chck_boxes){
+		cb.checked = default_show[cb.name];
+	}
+
+	function changed(cb){
+		show[cb.name] = cb.checked;
+	}
+
+	for(var cb of chck_boxes){
+		cb.addEventListener('change', function(event){
+			changed(event.target);
+			course_filter(show);
+		});
+	}
+
+	course_filter(show);
+
+}
 
 
-function course_filter(){
+var courses;
+var semester = [];
+
+function classify_courses(){
 	var all_regex = /^[א-ת\s]+[\d\s]+[אבק]\d*$/m;
 
 	var names = [];
-	var courses = document.getElementsByClassName('coursebox clearfix');
-	var semester = [];
+	courses = document.getElementsByClassName('coursebox clearfix');
 
 	for (var i = 0; i < courses.length; i++){
 		var c = courses[i];
@@ -33,17 +84,13 @@ function course_filter(){
 
 		delete name;
 	}
+}
 
-	show = {
-		a: false,
-		b: true,
-		c: false,
-		x: false
-	}
+function course_filter(show){
 
-	shown = 0;
-	for (i = 0; i < courses.length; i++){
-		c = courses[i];
+	var shown = 0;
+	for (var i = 0; i < courses.length; i++){
+		var c = courses[i];
 		if(!show[semester[i]]){
 			c.style.display = 'none';
 		}
@@ -67,4 +114,5 @@ function course_filter(){
 }
 
 
-window.addEventListener('load', course_filter);
+window.addEventListener('load', classify_courses);
+window.addEventListener('load', add_controls);

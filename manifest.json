@@ -4,11 +4,7 @@
   "name": "moodle course filter",
   "description": "filtering the courses shown on the main page by semester",
   "version": "1.0",
-
-  "page_action":{
-    "default_popup": "popup.html", 
-    "default_title": "course filter"
-  },
+  "author": "Yosef Kaner",
 
   "content_scripts": [
     {
