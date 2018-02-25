@@ -8,11 +8,32 @@ function htmlToElement(html) {
 }
 
 function add_controls(){
-	var control_element = htmlToElement('<fieldset> <legend>בחר איזה קורסים להציג</legend> <div> <input type="checkbox" id="in-a" name="a" value="סמסטר א"> <label for="a">סמסטר א</label> </div> <div> <input type="checkbox" id="in-b" name="b" value="סמסטר ב" checked> <label for="b">סמסטר ב</label> </div> <div> <input type="checkbox" id="in-c" name="c" value="סמסטר קיץ"> <label for="c">סמסטר קיץ</label> </div> <div> <input type="checkbox" id="in-x" name="x" value="אחר"> <label for="x">כל דבר שהוא לא קורס - ספריה וכו</label> </div> </fieldset>');
+	var control_element = htmlToElement('<fieldset> <legend>בחר איזה קורסים להציג</legend> <div id="cbxs"> <div> <input type="checkbox" id="in-a" name="a" value="סמסטר א"> <label for="a">סמסטר א</label> </div> <div> <input type="checkbox" id="in-b" name="b" value="סמסטר ב" checked> <label for="b">סמסטר ב</label> </div> <div> <input type="checkbox" id="in-c" name="c" value="סמסטר קיץ"> <label for="c">סמסטר קיץ</label> </div> <div> <input type="checkbox" id="in-x" name="x" value="אחר"> <label for="x">כל דבר שהוא לא קורס - ספריה וכו</label> </div> </div> </fieldset>');
 
 	var course_box = document.getElementsByClassName('courses frontpage-course-list-enrolled')[0];
 	var frontpage = document.getElementById('frontpage-course-list');
 	frontpage.insertBefore(control_element, course_box);
+
+	var img = document.createElement('img');
+	var open_img = 'https://image.flaticon.com/icons/svg/118/118738.svg';
+	var close_img = 'https://image.flaticon.com/icons/svg/126/126492.svg';
+	img.src = open_img;
+	img.width = img.height = 16;
+	img.setAttribute('shown', 1);
+	control_element.insertBefore(img, control_element.firstChild);
+	var cbxs = control_element.querySelector('#cbxs');
+	img.onclick = function(){
+		if(img.getAttribute('shown') == 1){
+			cbxs.style.display = 'none';
+			img.setAttribute('shown', 0);
+			img.src = close_img;
+		}
+		else{
+			cbxs.style.display = '';
+			img.setAttribute('shown', 1);
+			img.src = open_img;
+		}
+	}
 
 	var default_show = {
 		a: false,
@@ -23,10 +44,10 @@ function add_controls(){
 
 	var show = default_show;
 
-	var in_a = frontpage.querySelector('#in-a');
-	var in_b = frontpage.querySelector('#in-b');
-	var in_c = frontpage.querySelector('#in-c');
-	var in_x = frontpage.querySelector('#in-x');
+	var in_a = control_element.querySelector('#in-a');
+	var in_b = control_element.querySelector('#in-b');
+	var in_c = control_element.querySelector('#in-c');
+	var in_x = control_element.querySelector('#in-x');
 
 	chck_boxes = [in_a, in_b, in_c, in_x];
 
