@@ -54,7 +54,7 @@ var courses;
 var semester = [];
 
 function classify_courses(){
-	var all_regex = /^[א-ת\s]+[\d\s]+[אבק]\d*$/m;
+	var all_regex = /^[א-ת\s!"#$%&'()*+,./:;<=>?@\^_`{|}~-]+[\d\s]+[אבק]\d*$/m;
 
 	var names = [];
 	courses = document.getElementsByClassName('coursebox clearfix');

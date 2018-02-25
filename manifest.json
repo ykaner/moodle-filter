@@ -10,7 +10,7 @@
     {
       "all_frames": true,
       "js": [ "filter.js" ],
-      "matches": [ "https://mw5.haifa.ac.il/" ],
+      "matches": [ "*://*.haifa.ac.il/" ],
       "run_at": "document_end"
     }
   ],
