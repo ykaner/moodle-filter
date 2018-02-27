@@ -7,7 +7,7 @@ function htmlToElement(html) {
     return template.content.firstChild;
 }
 
-function add_controls(){
+function add_controls(show){
 	var control_element = htmlToElement('<fieldset> <legend>בחר איזה קורסים להציג</legend> <div id="cbxs"> <div> <input type="checkbox" id="in-a" name="a" value="סמסטר א"> <label for="a">סמסטר א</label> </div> <div> <input type="checkbox" id="in-b" name="b" value="סמסטר ב" checked> <label for="b">סמסטר ב</label> </div> <div> <input type="checkbox" id="in-c" name="c" value="סמסטר קיץ"> <label for="c">סמסטר קיץ</label> </div> <div> <input type="checkbox" id="in-x" name="x" value="אחר"> <label for="x">כל דבר שהוא לא קורס - ספריה וכו</label> </div> </div> </fieldset>');
 
 	var course_box = document.getElementsByClassName('courses frontpage-course-list-enrolled')[0];
@@ -33,16 +33,8 @@ function add_controls(){
 			img.setAttribute('shown', 1);
 			img.src = open_img;
 		}
-	}
-
-	var default_show = {
-		a: false,
-		b: true,
-		c: false,
-		x: false
 	};
 
-	var show = default_show;
 
 	var in_a = control_element.querySelector('#in-a');
 	var in_b = control_element.querySelector('#in-b');
@@ -51,16 +43,21 @@ function add_controls(){
 
 	chck_boxes = [in_a, in_b, in_c, in_x];
 
-	for(var cb of chck_boxes){
-		cb.checked = default_show[cb.name];
+	for(let cb of chck_boxes){
+		cb.checked = show[cb.name];
 	}
 
 	function changed(cb){
 		show[cb.name] = cb.checked;
+		chrome.storage.sync.set({
+			"show": show
+		}, () => {
+			console.log("Changes synced");
+		});
 	}
 
-	for(var cb of chck_boxes){
-		cb.addEventListener('change', function(event){
+	for(let cb of chck_boxes){
+		cb.addEventListener('change', event => {
 			changed(event.target);
 			course_filter(show);
 		});
@@ -134,6 +131,18 @@ function course_filter(show){
 	}
 }
 
+function init() {
+	var default_show = {
+		a: false,
+		b: true,
+		c: false,
+		x: false
+	};
+	chrome.storage.sync.get("show", results => {
+		let show = results.show || default_show;//first value that evaluates to true (not undefined)
+		classify_courses();
+		add_controls(show);
+	});
+}
 
-window.addEventListener('load', classify_courses);
-window.addEventListener('load', add_controls);
+window.addEventListener('load', init);
