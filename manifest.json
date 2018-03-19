@@ -2,6 +2,7 @@
   "manifest_version": 2,
 
   "name": "moodle course filter",
+  "short_name": "course filter",
   "description": "filtering the courses shown on the main page by semester",
   "version": "1.0",
   "author": "Yosef Kaner",
@@ -14,6 +15,10 @@
       "run_at": "document_end"
     }
   ],
+  "icons":{
+    "128": "icons/m_icon_gray128.png",
+    "512": "icons/m_icon_gray.png"
+  },
 
     "permissions" :
     [
